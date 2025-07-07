@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZoneBrozStudios - We Build Digital Products</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000;
+            color: #EAEAEA;
+        }
+        .hero-gradient-text {
+            background: -webkit-linear-gradient(45deg, #38BDF8, #A78BFA, #F472B6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .section-glow {
+            background: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.1), transparent 40%);
+        }
+        .card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            background-color: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 40px rgba(56, 189, 248, 0.1);
+        }
+        .nav-link {
+            position: relative;
+            color: #A1A1AA;
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: #FFFFFF;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 1px;
+            bottom: -4px;
+            left: 0;
+            background-color: #38BDF8;
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+        .nav-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+        .primary-button {
+            background-color: #0EA5E9;
+            color: #FFFFFF;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .primary-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(14, 165, 233, 0.2);
+        }
+        .secondary-button {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #FFFFFF;
+            transition: background-color 0.3s ease;
+        }
+        .secondary-button:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        /* Scroll reveal animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            transition: opacity 0.3s ease-in-out;
+        }
+        .modal-container {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        .form-input, .form-select {
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            color: #EAEAEA;
+            transition: border-color 0.3s, background-color 0.3s;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            padding-right: 2.5rem; /* Space for arrow */
+        }
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #0EA5E9;
+            background-color: #222;
+        }
+        .select-wrapper {
+            position: relative;
+        }
+        .select-wrapper::after {
+            content: '▼';
+            font-size: 0.6rem;
+            color: #A1A1AA;
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        /* Project Carousel Styles */
+        .scroll-container {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        .scroll-container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari and Opera */
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-black/50 backdrop-blur-lg border-b border-white/10">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-white">ZoneBroz<span class="text-sky-400">.</span></a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#about" class="nav-link">About</a>
+                <a href="#team" class="nav-link">Team</a>
+                <a href="#services" class="nav-link">Services</a>
+                <a href="./projects.html" class="nav-link">Projects</a>
+                <button data-modal-trigger class="primary-button font-semibold py-2 px-5 rounded-lg text-sm">Contact Us</button>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-gray-300 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-black/80">
+            <div class="px-6 pt-2 pb-4 space-y-2">
+                <a href="#about" class="block py-2 text-gray-300 hover:text-white">About</a>
+                <a href="#team" class="block py-2 text-gray-300 hover:text-white">Team</a>
+                <a href="#services" class="block py-2 text-gray-300 hover:text-white">Services</a>
+                <a href="./projects.html" class="block py-2 text-gray-300 hover:text-white">Projects</a>
+                <button data-modal-trigger class="block mt-4 w-full text-center primary-button font-semibold py-2 px-5 rounded-lg">Contact Us</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="min-h-screen flex items-center justify-center text-center section-glow pt-24 pb-12">
+            <div class="container mx-auto px-6">
+                <div class="max-w-4xl mx-auto">
+                    <h1 class="text-5xl md:text-7xl lg:text-8xl font-black leading-tight reveal">
+                        We Build <span class="hero-gradient-text">Digital Products</span> for the Modern World.
+                    </h1>
+                    <p class="mt-6 text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto reveal" style="transition-delay: 200ms;">
+                        ZoneBrozStudios is a design and development agency focused on creating high-impact websites and applications that people love to use.
+                    </p>
+                    <div class="mt-10 flex justify-center gap-4 reveal" style="transition-delay: 400ms;">
+                        <a href="./projects.html" class="primary-button font-semibold py-3 px-8 rounded-lg">View Our Work</a>
+                        <button data-modal-trigger class="secondary-button font-semibold py-3 px-8 rounded-lg">Get In Touch</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="py-20 md:py-32">
+            <div class="container mx-auto px-6">
+                <div class="grid md:grid-cols-2 gap-16 items-center">
+                    <div class="reveal">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4">About ZoneBrozStudios</h2>
+                        <p class="text-zinc-400 mb-4">
+                            We're a tight-knit team of strategists, designers, and developers who are passionate about building things that matter. Our collaborative process ensures that we not only meet but exceed your expectations, delivering a product that is both beautiful and functional.
+                        </p>
+                        <p class="text-zinc-400">
+                            Our philosophy is simple: listen, create, and iterate. We believe the best digital products are born from a deep understanding of the user's needs and the client's goals.
+                        </p>
+                    </div>
+                    <div class="reveal" style="transition-delay: 200ms;">
+                        <img src="https://placehold.co/600x400/000000/38BDF8?text=Our+Process" alt="Our Process" class="rounded-xl shadow-2xl w-full h-auto object-cover">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section id="team" class="py-20 md:py-32">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-2xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 reveal">Meet the Founders</h2>
+                    <p class="text-zinc-400 mb-16 reveal" style="transition-delay: 150ms;">The minds behind the mission. We're a team of passionate creators dedicated to excellence.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <!-- Owner Zen Card -->
+                    <div class="card p-8 rounded-xl reveal flex flex-col items-center text-center">
+                        <img class="w-32 h-32 rounded-full" src="https://placehold.co/128x128/0ea5e9/ffffff?text=You" alt="Profile picture of the first owner">
+                        <h3 class="text-xl font-bold mt-6 mb-1">Zendyn Reddy</h3>
+                        <p class="text-sky-400 font-semibold mb-4">Co-Founder & CEO</p>
+                        <p class="text-zinc-400 mb-6">At ZoneBroz Studios, I lead with a passion for crafting innovative, user-centered digital experiences. With a background in computer science and a deep interest in design, technology, and product development, I focus on bringing ideas to life that are both functional and meaningful.</p>
+                        <div class="flex space-x-4">
+                            <a href="https://github.com/zendynr" class="text-zinc-500 hover:text-white transition-colors" title="GitHub"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12.001c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.378.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12.001C22 6.477 17.523 2 12 2z" clip-rule="evenodd" /></svg></a>
+                            <a href="https://x.com/ZendynZBS" class="text-zinc-500 hover:text-white transition-colors" title="Twitter"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg></a>
+                            <a href="https://www.linkedin.com/in/zendyn-reddy-507aa4365/" class="text-zinc-500 hover:text-white transition-colors" title="LinkedIn"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.5 18h3V9h-3v9zm-1.25-10.25a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM18 18h-3v-4.5c0-1.04-.02-2.37-.5-3.25-1.46-.8-1.68.62-1.68 2.47V18h-3V9h2.88v1.34h.04c.4-.76 1.37-1.54 2.84-1.54 3.03 0 3.59 1.99 3.59 4.58V18z"/></svg></a>
+                        </div>
+                    </div>
+                    <!-- Owner Cj Card -->
+                    <div class="card p-8 rounded-xl reveal flex flex-col items-center text-center" style="transition-delay: 200ms;">
+                        <img class="w-32 h-32 rounded-full" src="https://placehold.co/128x128/a78bfa/ffffff?text=Co-Owner" alt="Profile picture of the second owner">
+                        <h3 class="text-xl font-bold mt-6 mb-1">Cornelis de Heus</h3>
+                        <p class="text-purple-400 font-semibold mb-4">Co-Founder & Lead Designer</p>
+                        <p class="text-zinc-400 mb-6">As Co-Founder and Lead Designer at ZoneBroz Studios, I bring a sharp eye for detail, a strong sense of visual storytelling, and a deep understanding of user experience. With a background in digital design and years of creative problem-solving, I shape the look, feel, and functionality of our products.</p>
+                        <div class="flex space-x-4">
+                            <a href="https://github.com/ReXyBear11" class="text-zinc-500 hover:text-white transition-colors" title="GitHub"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12.001c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.378.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12.001C22 6.477 17.523 2 12 2z" clip-rule="evenodd" /></svg></a>
+                            <a href="https://x.com/cjdeheus" class="text-zinc-500 hover:text-white transition-colors" title="Twitter"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg></a>
+                            <a href="https://www.linkedin.com/in/cornelis-de-heus-4ba938372/" class="text-zinc-500 hover:text-white transition-colors" title="LinkedIn"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.5 18h3V9h-3v9zm-1.25-10.25a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM18 18h-3v-4.5c0-1.04-.02-2.37-.5-3.25-1.46-.8-1.68.62-1.68 2.47V18h-3V9h2.88v1.34h.04c.4-.76 1.37-1.54 2.84-1.54 3.03 0 3.59 1.99 3.59 4.58V18z"/></svg></a>
+                        </div>
+                    </div>
+                    <!-- Owner 3 Khanyni Card -->
+                    <div class="card p-8 rounded-xl reveal flex flex-col items-center text-center" style="transition-delay: 400ms;">
+                        <img class="w-32 h-32 rounded-full" src="https://placehold.co/128x128/f472b6/ffffff?text=Co-Owner" alt="Profile picture of the third owner">
+                        <h3 class="text-xl font-bold mt-6 mb-1">Khanyiso Mkulise</h3>
+                        <p class="text-pink-400 font-semibold mb-4">Co-Founder & CTO</p>
+                        <p class="text-zinc-400 mb-6">As Co-Founder and CTO at ZoneBroz Studios, I lead the development of our technology stack with a strong focus on AI-driven solutions. My background in full-stack development and cloud infrastructure allows me to architect scalable, intelligent systems that power our most ambitious ideas. I’m passionate about leveraging machine learning and automation to build smarter, more adaptive products—turning cutting-edge innovation into real-world impact.</p>
+                        <div class="flex space-x-4">
+                            <a href="https://github.com/khanyisomkulise" class="text-zinc-500 hover:text-white transition-colors" title="GitHub"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12.001c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.378.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12.001C22 6.477 17.523 2 12 2z" clip-rule="evenodd" /></svg></a>
+                            <a href="#" class="text-zinc-500 hover:text-white transition-colors" title="Twitter"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg></a>
+                            <a href="https://za.linkedin.com/in/khanyiso-mkulise-b59938372" class="text-zinc-500 hover:text-white transition-colors" title="LinkedIn"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.5 18h3V9h-3v9zm-1.25-10.25a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM18 18h-3v-4.5c0-1.04-.02-2.37-.5-3.25-1.46-.8-1.68.62-1.68 2.47V18h-3V9h2.88v1.34h.04c.4-.76 1.37-1.54 2.84-1.54 3.03 0 3.59 1.99 3.59 4.58V18z"/></svg></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="py-20 md:py-32 section-glow">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-2xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 reveal">What We Do</h2>
+                    <p class="text-zinc-400 mb-16 reveal" style="transition-delay: 150ms;">We offer a complete suite of services to help your business thrive in the digital landscape.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="card p-8 rounded-xl reveal">
+                        <h3 class="text-xl font-bold mb-3">UI/UX Design</h3>
+                        <p class="text-zinc-400">Crafting intuitive, beautiful, and user-centric interfaces that provide a delightful experience.</p>
+                    </div>
+                    <div class="card p-8 rounded-xl reveal" style="transition-delay: 200ms;">
+                        <h3 class="text-xl font-bold mb-3">Web Development</h3>
+                        <p class="text-zinc-400">Building fast, scalable, and secure websites and web applications using modern technologies.</p>
+                    </div>
+                    <div class="card p-8 rounded-xl reveal" style="transition-delay: 400ms;">
+                        <h3 class="text-xl font-bold mb-3">Brand Strategy</h3>
+                        <p class="text-zinc-400">Helping you define your brand's voice and identity to connect with your audience meaningfully.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Projects Section -->
+        <section id="projects" class="py-20 md:py-32">
+            <div class="container mx-auto px-6">
+                 <div class="text-center max-w-2xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 reveal">Featured Work</h2>
+                    <p class="text-zinc-400 mb-12 reveal" style="transition-delay: 150ms;">Take a look at some of the projects we're proud to have been a part of.</p>
+                </div>
+                <div class="relative reveal">
+                    <!-- Scroll Container -->
+                    <div id="scroll-container" class="flex overflow-x-scroll snap-x snap-mandatory scroll-container scroll-smooth gap-8 pb-8">
+                        
+                        <!-- Project 1 -->
+                        <div class="snap-center shrink-0 w-full md:w-2/3 lg:w-1/2">
+                            <div class="card rounded-xl overflow-hidden">
+                                <img src="https://placehold.co/600x450/0ea5e9/ffffff?text=Project+Alpha" alt="Project Alpha" class="w-full h-auto object-cover">
+                                <div class="p-6">
+                                    <h3 class="text-xl font-bold">Project Alpha</h3>
+                                    <p class="text-zinc-400 mt-2">A complete brand and web overhaul for a leading tech startup.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project 2 -->
+                        <div class="snap-center shrink-0 w-full md:w-2/3 lg:w-1/2">
+                            <div class="card rounded-xl overflow-hidden">
+                                <img src="https://placehold.co/600x450/a78bfa/ffffff?text=Project+Beta" alt="Project Beta" class="w-full h-auto object-cover">
+                                <div class="p-6">
+                                    <h3 class="text-xl font-bold">Project Beta</h3>
+                                    <p class="text-zinc-400 mt-2">An innovative e-commerce experience for a fashion brand.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project 3 -->
+                        <div class="snap-center shrink-0 w-full md:w-2/3 lg:w-1/2">
+                            <div class="card rounded-xl overflow-hidden">
+                                <img src="https://placehold.co/600x450/f472b6/ffffff?text=Project+Gamma" alt="Project Gamma" class="w-full h-auto object-cover">
+                                <div class="p-6">
+                                    <h3 class="text-xl font-bold">Project Gamma</h3>
+                                    <p class="text-zinc-400 mt-2">A data visualization dashboard for a financial services company.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- Scroll Buttons -->
+                    <div class="flex justify-center mt-8 gap-4">
+                        <button id="scroll-left" class="secondary-button p-3 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+                        </button>
+                        <button id="scroll-right" class="secondary-button p-3 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                        </button>
+                    </div>
+                </div>
+                 <div class="text-center mt-12">
+                     <a href="./projects.html" class="primary-button font-semibold py-3 px-8 rounded-lg inline-block">View All Projects</a>
+                </div>
+            </div>
+        </section>
+        
+        <section id="contact"></section>
+    </main>
+
+    <!-- Contact Modal -->
+    <div id="contact-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50 hidden opacity-0">
+        <div class="modal-container bg-[#111111] w-full max-w-3xl rounded-xl shadow-2xl p-8 md:p-12 border border-zinc-800 opacity-0 transform scale-95 max-h-full overflow-y-auto">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold">Tell us where you're at</h2>
+                <button id="close-modal-button" class="text-zinc-500 hover:text-white transition-colors text-4xl leading-none">&times;</button>
+            </div>
+
+            <form action="https://formspree.io/f/mvgrynvw" method="POST">
+                <div class="space-y-6">
+                    <!-- Row 1: Name & Email -->
+                    <div class="grid sm:grid-cols-2 gap-6">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-zinc-400 mb-2">What is your name?</label>
+                            <input type="text" name="name" id="name" required class="w-full form-input rounded-md py-3 px-4">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-zinc-400 mb-2">What is your email?</label>
+                            <input type="email" name="_replyto" id="email" required class="w-full form-input rounded-md py-3 px-4">
+                        </div>
+                    </div>
+                    <!-- Row 2: Role -->
+                    <div>
+                        <label for="role" class="block text-sm font-medium text-zinc-400 mb-2">What is your role in the company?</label>
+                        <input type="text" name="role" id="role" class="w-full form-input rounded-md py-3 px-4">
+                    </div>
+                    <!-- Row 3: Company Name & Website -->
+                    <div class="grid sm:grid-cols-2 gap-6">
+                        <div>
+                            <label for="company_name" class="block text-sm font-medium text-zinc-400 mb-2">Company Name</label>
+                            <input type="text" name="company_name" id="company_name" class="w-full form-input rounded-md py-3 px-4">
+                        </div>
+                        <div>
+                            <label for="company_website" class="block text-sm font-medium text-zinc-400 mb-2">Company Website</label>
+                            <input type="url" name="company_website" id="company_website" class="w-full form-input rounded-md py-3 px-4">
+                        </div>
+                    </div>
+                    <!-- Row 4: Company Size & Revenue -->
+                    <div class="grid sm:grid-cols-2 gap-6">
+                        <div class="select-wrapper">
+                            <label for="company_size" class="block text-sm font-medium text-zinc-400 mb-2">Company Size</label>
+                            <select name="company_size" id="company_size" class="w-full form-select rounded-md py-3 px-4">
+                                <option>Select company size</option>
+                                <option>1-10 employees</option>
+                                <option>11-50 employees</option>
+                                <option>51-200 employees</option>
+                                <option>201-1000 employees</option>
+                                <option>1000+ employees</option>
+                            </select>
+                        </div>
+                        <div class="select-wrapper">
+                            <label for="revenue" class="block text-sm font-medium text-zinc-400 mb-2">Company's Annual Revenue</label>
+                            <select name="revenue" id="revenue" class="w-full form-select rounded-md py-3 px-4">
+                                <option>Select revenue range</option>
+                                <option>Under $1M</option>
+                                <option>$1M - $10M</option>
+                                <option>$10M - $50M</option>
+                                <option>$50M+</option>
+                            </select>
+                        </div>
+                    </div>
+                     <!-- Row 5: Budget & Services -->
+                    <div class="grid sm:grid-cols-2 gap-6">
+                        <div class="select-wrapper">
+                            <label for="budget" class="block text-sm font-medium text-zinc-400 mb-2">Project budget</label>
+                            <select name="budget" id="budget" class="w-full form-select rounded-md py-3 px-4">
+                                <option>Select budget range</option>
+                                <option>$5,000 - $10,000</option>
+                                <option>$10,000 - $25,000</option>
+                                <option>$25,000 - $50,000</option>
+                                <option>$50,000+</option>
+                            </select>
+                        </div>
+                        <div class="select-wrapper">
+                            <label for="services-interest" class="block text-sm font-medium text-zinc-400 mb-2">What services are you interested in?</label>
+                            <select name="services_interest" id="services-interest" class="w-full form-select rounded-md py-3 px-4">
+                                <option>Select service</option>
+                                <option>UI/UX Design</option>
+                                <option>Web Development</option>
+                                <option>Brand Strategy</option>
+                                <option>Full Package</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Row 6: Message -->
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-zinc-400 mb-2">Message</label>
+                        <textarea name="message" id="message" rows="5" required class="w-full form-input rounded-md py-3 px-4 resize-none"></textarea>
+                    </div>
+                    <!-- Row 7: Submit -->
+                    <div class="text-center pt-4">
+                        <button type="submit" class="secondary-button font-semibold py-3 px-10 rounded-lg text-lg w-full sm:w-auto">Send Inquiry</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-white/10">
+        <div class="container mx-auto px-6 text-center text-zinc-500">
+            <p>&copy; 2025 ZoneBrozStudios. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Modal Logic
+        const modal = document.getElementById('contact-modal');
+        const modalContainer = modal.querySelector('.modal-container');
+        const closeModalButton = document.getElementById('close-modal-button');
+        const openModalButtons = document.querySelectorAll('[data-modal-trigger]');
+
+        const openModal = () => {
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContainer.classList.remove('opacity-0', 'scale-95');
+            }, 10);
+        };
+
+        const closeModal = () => {
+            modalContainer.classList.add('opacity-0', 'scale-95');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        };
+
+        openModalButtons.forEach(button => button.addEventListener('click', openModal));
+        closeModalButton.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape" && !modal.classList.contains('hidden')) closeModal();
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+        document.querySelectorAll('#mobile-menu a, #mobile-menu button').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
+
+        // Scroll reveal animation
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealOnScroll = () => {
+            const windowHeight = window.innerHeight;
+            revealElements.forEach(el => {
+                if (el.getBoundingClientRect().top < windowHeight - 100) {
+                    el.classList.add('visible');
+                }
+            });
+        };
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll();
+
+        // Project Carousel Logic
+        const scrollContainer = document.getElementById('scroll-container');
+        const scrollLeftButton = document.getElementById('scroll-left');
+        const scrollRightButton = document.getElementById('scroll-right');
+
+        if (scrollContainer) {
+            scrollLeftButton.addEventListener('click', () => {
+                const scrollAmount = scrollContainer.querySelector('.snap-center').clientWidth;
+                scrollContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            });
+
+            scrollRightButton.addEventListener('click', () => {
+                const scrollAmount = scrollContainer.querySelector('.snap-center').clientWidth;
+                scrollContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            });
+        }
+    </script>
+
+</body>
+</html>
